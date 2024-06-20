@@ -1,0 +1,502 @@
+[
+    {
+        "id": "3298c3c10814ce42",
+        "type": "tab",
+        "label": "流程3",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "34c01df761fa2fe0",
+        "type": "inject",
+        "z": "3298c3c10814ce42",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "0",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 160,
+        "y": 60,
+        "wires": [
+            [
+                "567b3d511d7216ba"
+            ]
+        ]
+    },
+    {
+        "id": "fdfcd66209cb4c07",
+        "type": "inject",
+        "z": "3298c3c10814ce42",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "3",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 160,
+        "y": 100,
+        "wires": [
+            [
+                "ca684822600c91be"
+            ]
+        ]
+    },
+    {
+        "id": "1ff2e1f11277e253",
+        "type": "debug",
+        "z": "3298c3c10814ce42",
+        "name": "debug 13",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1420,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "567b3d511d7216ba",
+        "type": "change",
+        "z": "3298c3c10814ce42",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "arrange",
+                "pt": "global",
+                "to": "0101010",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "score",
+                "pt": "global",
+                "to": "0",
+                "tot": "num"
+            },
+            {
+                "t": "set",
+                "p": "ball",
+                "pt": "msg",
+                "to": "7",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 360,
+        "y": 60,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "665b5eb86c374252",
+        "type": "mqtt in",
+        "z": "3298c3c10814ce42",
+        "name": "",
+        "topic": "lamy/Light1",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "3e11bccd.52fd44",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 110,
+        "y": 280,
+        "wires": [
+            [
+                "d57edd2b4d04888f",
+                "5bdcaacdea55bc4f"
+            ]
+        ]
+    },
+    {
+        "id": "8694f310f90f48e2",
+        "type": "mqtt in",
+        "z": "3298c3c10814ce42",
+        "name": "",
+        "topic": "lamy/LED",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "3e11bccd.52fd44",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 120,
+        "y": 360,
+        "wires": [
+            [
+                "c30b4b4173c05f7d"
+            ]
+        ]
+    },
+    {
+        "id": "d57edd2b4d04888f",
+        "type": "function",
+        "z": "3298c3c10814ce42",
+        "name": "handelTopicLight",
+        "func": "/**\n * 檢查來自哪個主題的消息\n */\n\n\n    /**\n     * Light index [0 - 6]\n     */\n\n    let lightStatus = msg.payload;\n    node.status({ fill: \"blue\", shape: \"dot\", text: \"lamy/Light1 \" + lightStatus });\n\n    if (lightStatus === \"7\") {\n        //node.status({fill:\"green\",shape:\"dot\",text:\"LED is ON\"});\n        if (global.get('ball')!==\"7\"){\n            global.set('score',global.get('score')+1 );\n            global.set('ball',\"7\");\n            \n        }\n        msg.payload=0\n        return msg;\n       \n    }\n    else {\n        //node.status({fill:\"red\",shape:\"dot\",text:\"LED is OFF\"});\n        let range = global.get('arrange');\n        \n        let lightIndex = Number(lightStatus);\n\n        if(range[lightIndex] !== '0') {\n            \n            \n            global.set('ball', lightStatus);\n            msg.payload = 1;\n            return msg;\n        }\n        else {\n            msg.payload = 0;\n            return msg;\n        }\n    }\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 280,
+        "wires": [
+            [
+                "696993bec4ccef4c",
+                "eb11ec9653778805",
+                "ca684822600c91be"
+            ]
+        ]
+    },
+    {
+        "id": "f1f6ae27b9fadb4d",
+        "type": "mqtt out",
+        "z": "3298c3c10814ce42",
+        "name": "",
+        "topic": "lamy/Signal",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "3e11bccd.52fd44",
+        "x": 810,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "b9227119cb907f06",
+        "type": "ui_button",
+        "z": "3298c3c10814ce42",
+        "name": "",
+        "group": "41a5cbc54a6101bc",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "reset",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 330,
+        "y": 540,
+        "wires": [
+            [
+                "7f93a1f08238aae2"
+            ]
+        ]
+    },
+    {
+        "id": "0a9f3866d88f72fe",
+        "type": "inject",
+        "z": "3298c3c10814ce42",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "3",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 680,
+        "wires": [
+            [
+                "dfc9ff8690ddc3fe"
+            ]
+        ]
+    },
+    {
+        "id": "dfc9ff8690ddc3fe",
+        "type": "function",
+        "z": "3298c3c10814ce42",
+        "name": "function 9",
+        "func": "// return debug\nmsg.payload = global.get('arrange');\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 680,
+        "wires": [
+            [
+                "8a3b47dfa46354bc"
+            ]
+        ]
+    },
+    {
+        "id": "8a3b47dfa46354bc",
+        "type": "debug",
+        "z": "3298c3c10814ce42",
+        "name": "debug 17",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 500,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "657b794bb270e393",
+        "type": "function",
+        "z": "3298c3c10814ce42",
+        "name": "function 10",
+        "func": "// return debug\nmsg.payload = global.get('arrange');\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 610,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c30b4b4173c05f7d",
+        "type": "function",
+        "z": "3298c3c10814ce42",
+        "name": "handelTopicLED",
+        "func": "/**\n * 檢查來自哪個主題的消息\n */\nif (msg.topic === \"lamy/LED\") {\n    /**\n     * LED array [7]\n     */\n\n    let rangePayload = msg.payload;\n    // node.status({ fill: \"red\", shape: \"dot\", text: \"lamy/LED \" + lightStatus });\n\n    let range = global.get('arrange');\n    range = rangePayload;\n    global.set('arrange', msg.payload);\n   \n}\nelse {\n  \n}\n/*\nelse {\n    // debug arrange 修改測試\n    const rangePayload = \"1111111\";\n    let range = global.get('arrange');\n    range = rangePayload;\n    msg.payload = range;\n}\n*/\n\n// 返回消息，以便後續節點可以使用\n\nmsg.payload = global.get('arrange');\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 360,
+        "wires": [
+            [
+                "657b794bb270e393"
+            ]
+        ]
+    },
+    {
+        "id": "696993bec4ccef4c",
+        "type": "function",
+        "z": "3298c3c10814ce42",
+        "name": "function 14",
+        "func": "node.status({ fill: \"blue\", shape: \"dot\", text: \"是否得分 \" + msg.payload });\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 710,
+        "y": 300,
+        "wires": [
+            [
+                "f1f6ae27b9fadb4d"
+            ]
+        ]
+    },
+    {
+        "id": "eb11ec9653778805",
+        "type": "function",
+        "z": "3298c3c10814ce42",
+        "name": "function 15",
+        "func": "node.status({ fill: \"blue\", shape: \"dot\", text: \"ball \" +global.get('ball') });\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 570,
+        "y": 340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "272b83600dacbb32",
+        "type": "ui_text",
+        "z": "3298c3c10814ce42",
+        "group": "41a5cbc54a6101bc",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "Score",
+        "label": "Score",
+        "format": "{{msg.payload}}",
+        "layout": "row-center",
+        "className": "",
+        "style": true,
+        "font": "",
+        "fontSize": "21",
+        "color": "#000000",
+        "x": 1410,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "ca684822600c91be",
+        "type": "function",
+        "z": "3298c3c10814ce42",
+        "name": "function 8",
+        "func": "msg.payload = global.get('score')\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1260,
+        "y": 240,
+        "wires": [
+            [
+                "272b83600dacbb32",
+                "1ff2e1f11277e253"
+            ]
+        ]
+    },
+    {
+        "id": "7f93a1f08238aae2",
+        "type": "function",
+        "z": "3298c3c10814ce42",
+        "name": "function 16",
+        "func": "global.set('score', 0);\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 540,
+        "wires": [
+            [
+                "ca684822600c91be"
+            ]
+        ]
+    },
+    {
+        "id": "5bdcaacdea55bc4f",
+        "type": "debug",
+        "z": "3298c3c10814ce42",
+        "name": "debug 23",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 280,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "3e11bccd.52fd44",
+        "type": "mqtt-broker",
+        "name": "Mosquitto",
+        "broker": "140.127.196.39",
+        "port": "18883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "compatmode": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "41a5cbc54a6101bc",
+        "type": "ui_group",
+        "name": "分數",
+        "tab": "787090f7290e8cad",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "787090f7290e8cad",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
