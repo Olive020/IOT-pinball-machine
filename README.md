@@ -20,6 +20,25 @@
   * Sensor_Node:
     1. LED/LED.ino: The LED.ino file is used to control the LED lights. It illuminates the LEDs for scoreable tracks and turns off the LEDs for non-scoreable tracks. Each time a user scores, it receives a score signal via MQTT and randomly changes the scoreable track.
     2. Light/Light.ino:The Light.ino file is used to operate the light-sensitive sensor module. It detects the track traversed by a steel ball and uploads the track code to MQTT.
+   
+
+* ## Assembly Instructions
+  Two Node MCU32S boards are used in this project, with one board connected to 7 light-sensitive sensors and the other connected to 7 LEDs. The light-sensitive sensors are positioned under the tracks, while the LEDs are placed above each track to indicate scoreable tracks to the user. Ensure that each LED and its corresponding light-sensitive sensor share the same numbering to avoid scoring errors.
+
+  The programs used for this setup are Light/Light.ino and LED/LED.ino, which should be uploaded using the Arduino IDE.
+  
+  For backend operations, download Node-RED and import the "flows.json" file.
+
+* ## Contributors
+
+   A huge thank you to all the people who have contributed to this project!
+
+   ### Core Team
+
+   - [wadanono](https://github.com/wadanono) - **Hardware Debugging**
+   - [ffaa0100aa](https://github.com/ffaa0100aa) - **Hardware Debugging**
+   - [hhoowwaarrdd](https://github.com/hhoowwaarrdd) - **Assembly**
+   - [Olive](https://github.com/Olive020) - **Backend Development**
 
 
 
