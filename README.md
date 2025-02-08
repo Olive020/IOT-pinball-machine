@@ -40,7 +40,7 @@
    - [hhoowwaarrdd](https://github.com/hhoowwaarrdd) - **Assembly**
    - [Olive](https://github.com/Olive020) - **Backend Development**
    - [oath](https://github.com/aaaaa5455) - - **Firmware Development**
-   - [hmes98318](https://github.com/hmes98318) - - **Firmware Development**
+  
   ### Special Thanks
    - [hmes98318](https://github.com/hmes98318) - - **Backend Testing**
 
