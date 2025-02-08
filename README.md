@@ -39,7 +39,10 @@
    - [ffaa0100aa](https://github.com/ffaa0100aa) - **Hardware Debugging**
    - [hhoowwaarrdd](https://github.com/hhoowwaarrdd) - **Assembly**
    - [Olive](https://github.com/Olive020) - **Backend Development**
+   - [oath](https://github.com/aaaaa5455) - - **Firmware Development**
+   - [hmes98318](https://github.com/hmes98318) - - **Firmware Development**
   ### Special Thanks
+   - [hmes98318](https://github.com/hmes98318) - - **Backend Testing**
 
   Each member of the team has demonstrated exceptional dedication and expertise, contributing to the success of the project. Their collective efforts have been instrumental in achieving our project goals.
 
